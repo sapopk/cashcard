@@ -20,18 +20,21 @@ tasks.named('test') {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencies {
    implementation 'org.springframework.boot:spring-boot-starter-web'
    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
    // Add the two dependencies below
    implementation 'org.springframework.data:spring-data-jdbc'
    implementation 'com.h2database:h2'
+
+   implementation 'org.springframework.boot:spring-boot-starter-web'
+
+   // Add the following dependency
+   implementation 'org.springframework.boot:spring-boot-starter-security'
+
+   implementation 'org.springframework.boot:spring-boot-starter-web'
+   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
