@@ -14,8 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 class SecurityConfig {
+
+    // Add this Annotation
+    @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.build();
+         http.authorizeHttpRequests(request -> request.requestMatchers("/cashcards/**").hasRole("CARD-OWNER"))
+                 .httpBasic(Customizer.withDefaults())
+                 .csrf(csrf -> csrf.disable());
+         return http.build();
     }
 
     @Bean
@@ -23,9 +29,13 @@ class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Add this Annotation
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.build();
+    UserDetailsService testOnlyUsers(PasswordEncoder passwordEncoder) {
+        User.UserBuilder users = User.builder();
+        UserDetails sarah = users .username("sarah1").password(passwordEncoder.encode("abc123"))
+            .roles("CARD-OWNER").build();
+        UserDetails hankOwnsNoCard = users.username("hank-owns-no-cards").password(passwordEncoder.encode("qrs456"))
+            .roles("NON-OWNER").build();
+        return new InMemoryUserDetailsManager(sarah, hankOwnsNoCard);
     }
 }
